@@ -1,7 +1,7 @@
 import React from 'react';
 import io from "socket.io-client";
 import decode from 'jwt-decode';
-
+import './chatComponent.css';
 // import Header from './Main/Header';
 
 
@@ -11,7 +11,7 @@ class ChatComponent extends React.Component{
             super(props);
 
             this.state = {
-                // username: '',
+                userData: false,
                 message: '',
                 messages: []
             };
@@ -52,10 +52,14 @@ class ChatComponent extends React.Component{
 
         componentDidMount() {
             const token = localStorage.getItem('authToken');
-            console.log(token);
             if((token !== undefined) && (token !== null)){
-                this.setState({data: decode(token).foundUser, userToken: token}, () => {
-                    this.socket.emit('REGISTER_USER', token);
+                this.setState({userData: decode(token).foundUser}, () => {
+                    const chat = {
+                        userId: this.state.userData.userId,
+                        chatWith: this.props.friend
+                    }
+                    console.log(chat)
+                    this.socket.emit('REGISTER_USER', chat);
                 });
             }
         }
@@ -65,12 +69,9 @@ class ChatComponent extends React.Component{
         return(
             <div>
                 <div className="d-flex flex-column bd-highlight mb-3">
-                    <div className="p-2 bd-highlight">
-                        <h3>Chat</h3>
-                    </div>
-                    <div className="p-2 bd-highlight">
                         
-                        <div className="">
+                    <div data-spy="scroll" data-offset="auto">
+                        <div id="message_box">
                             {this.state.messages.map((message, i) => {
                                 return (
                                     // <div>{message.author}: {message.message}</div>
@@ -78,22 +79,14 @@ class ChatComponent extends React.Component{
                                 )
                             })}
                         </div>
-                        
-                         {/* <div className="card-footer">
-                                <input type="text" placeholder="Username" value={this.state.username} onChange={ev => this.setState({username: ev.target.value})} className="form-control"/>
-                                <br/>
-                                <input type="text" placeholder="Message" className="form-control" value={this.state.message} onChange={ev => this.setState({message: ev.target.value})}/>
-                                <br/>
-                                <button onClick={this.sendMessage} className="btn btn-primary form-control">Send</button>
-                            </div>
-                        </div> */}
-                        
                     </div>
-                    <div className="p-2 bd-highlight">
-                        <form className="form-group" onSubmit={this.handleSubmit} >
 
-                            <input type="text" placeholder=" type message" name='message' className="form-control col-sm-5 d-inline-flex mr-2" value={this.state.message} onChange={ev => this.setState({message: ev.target.value})} />
-                            <button className="btn btn-primary d-inline-flex" onClick={this.sendMessage}>Send</button>
+                    <div className="p-2 bd-highlight">
+                        <form onSubmit={this.handleSubmit} >
+                            <div className="row">
+                                <input type="text" placeholder=" type message" name='message' className="col-9 col-sm-10 col-md-9 col-lg-10 form-control mr-auto" value={this.state.message} onChange={ev => this.setState({message: ev.target.value})} />
+                                <button className="btn btn-primary" onClick={this.sendMessage}>Send</button>
+                            </div>
                         </form>
                     </div>
                 </div>    

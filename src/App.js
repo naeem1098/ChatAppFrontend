@@ -6,7 +6,7 @@ import 'popper.js';
 import './App.css';
 
 import AppRouter from './Router';
-import Login from './views/login';
+// import Login from './views/login';
 
 class App extends Component {
   constructor(props) {
@@ -26,8 +26,8 @@ class App extends Component {
   render() { 
     return (
         <div>                    
-            {((this.state.token === undefined) || (this.state.token === null))? <Login className='margin-top' callbackFromParent={this.tokenReceived}/> : <AppRouter />}
-            {/* <AppRouter /> */}
+            {/* {((this.state.token === undefined) || (this.state.token === null))? <Login callbackFromParent={this.tokenReceived}/> : <AppRouter />} */}
+            <AppRouter />
         </div>
     );
   }

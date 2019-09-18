@@ -1,0 +1,6 @@
+
+#message_box{
+    height: 300px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}

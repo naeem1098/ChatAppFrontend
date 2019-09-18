@@ -21,15 +21,15 @@ componentDidMount() {
 
 userProfile = () => (
     <div>
-        <h3>username : {this.state.data.username}</h3>
+        <img src={"http://localhost:3100/userImage/"+this.state.data.userImage} alt="" width="75px" height="75px" className="rounded-circle" />
+        <h3>Welcome {this.state.data.username}</h3>
         <h4>email : {this.state.data.email}</h4>
-        <h4>password : {this.state.data.password}</h4>
     </div>
 );
 render() { 
     return ( 
         <div className="shadow-sm p-3 mb-5 bg-white rounded">
-            <h1>Home Component</h1>
+
             {
                 (this.state.data !== undefined) ? this.userProfile() : null 
             }
